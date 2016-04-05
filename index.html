@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>assignment03 - Change Calculator</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>Change Calculator</h1>
+
+    <p>Enter the number of cents (0-99):<input type="text" id="txtInput" /></p>
+
+    <table>
+        <tr>
+            <td>
+                <input type="submit" id="btnCalculate" value="Calculate" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Quarters:</b>
+            </td>
+            <td>
+                <input type="text" id="txtQuarters" disabled />
+                <span id="spQuarters"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Dimes:</b>
+            </td>
+            <td>
+                <input type="text" id="txtDimes" disabled />
+                <span id="spDimes"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Nickels:</b>
+            </td>
+            <td>
+                <input type="text" id="txtNickels" disabled />
+                <span id="spNickels"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Pennies:</b>
+            </td>
+            <td>
+                <input type="text" id="txtPennies" disabled />
+                <span id="spPennies"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Total:</b>
+            </td>
+            <td>
+                <input type="text" id="txtTotal" disabled />
+                <span id="spTotal"></span>
+            </td>
+        </tr>
+    </table>
+
+
+    <script>
+        var $ = function (id) {
+            return document.getElementById(id)
+        }
+
+        window.onload = function () {
+            $('btnCalculate').onclick = calculateChange;
+        }
+
+
+
+        function calculateChange() {
+
+            var cents = $('txtInput').value,
+                leftoverChange,
+                quarters,
+                dimes,
+                nickels,
+                pennies;
+
+
+            //check for proper input
+            var error = "Please choose a valid integer between 0 and 99";
+            if (isNaN(cents)) {
+                alert(error);
+                return;
+    
+            }else {
+                if (cents > 99 || cents < 0) {
+                    alert(error);
+                    return;
+                }
+            }
+
+           
+            //find number of quarters
+            if (cents % 25 != 0) {
+                quarters = (cents - (cents%25)) / 25;
+                leftoverChange = cents % 25;
+            } else {
+                if (cents % 25 == 0) {
+                    quarters = cents / 25;
+                    dimes = 0;
+                    nickels = 0;
+                    pennies = 0;
+                    leftoverChange = 0;
+                    displayValue();
+                }
+            }
+            //find number of dimes
+
+            if (leftoverChange % 10 != 0) {
+                dimes = (leftoverChange - (leftoverChange%10)) / 10;
+                leftoverChange = leftoverChange % 10;
+            } else {
+                if (leftoverChange % 10 == 0) {
+
+                    dimes = leftoverChange / 10;
+                    nickels = 0;
+                    pennies = 0;
+                    leftoverChange = 0;
+                    displayValue();
+                }
+            }
+
+            //find number of nickels
+            if (leftoverChange % 5 != 0) {
+                nickels = (leftoverChange - (leftoverChange % 5)) / 5;
+                leftoverChange = leftoverChange % 5;
+            } else {
+                if (leftoverChange % 5 == 0) {
+
+                    nickels = leftoverChange / 5;
+                    pennies = 0;
+                    leftoverChange = 0;
+                    displayValue();
+                }
+            }
+
+            //find number of pennies
+                    pennies = leftoverChange;
+                    leftoverChange = 0;
+                    displayValue();
+
+
+
+            function displayValue() {
+                $('txtQuarters').value = quarters;
+                if (quarters == 0) {
+                    $('spQuarters').innerHTML = ' = 0.00'
+                } else {
+                    $('spQuarters').innerHTML = ' = ' + quarters * 0.25;
+                }
+
+                $('txtDimes').value = dimes;
+                if (dimes == 0) {
+                    $('spDimes').innerHTML = ' = 0.00';
+                } else {
+                    $('spDimes').innerHTML = ' = ' + dimes * 0.10 + '0';
+                }
+
+                $('txtNickels').value = nickels;
+                if (nickels == 0) {
+                    $('spNickels').innerHTML = ' = 0.00';
+                } else {
+                    $('spNickels').innerHTML = ' = ' + nickels * 0.05;
+                }
+
+                $('txtPennies').value = pennies;
+                if (pennies == 0) {
+                    $('spPennies').innerHTML = ' = 0.00';
+                } else {
+                    $('spPennies').innerHTML = " = 0.0" + pennies;
+                }
+                
+
+                $('txtTotal').value = "Total";
+                if (cents < 10) {
+                    $('spTotal').innerHTML = " = 0.0" + cents;
+                } else {
+                    $('spTotal').innerHTML = " = 0." + cents;
+                }
+                
+            }
+
+        }
+
+
+
+
+
+       
+
+    </script>
+</body>
+</html>
